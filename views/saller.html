@@ -1,0 +1,180 @@
+<div ng-controller="sellercontroller">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<div>
+	<!-- main header outside -->
+	<div>
+		<h1 style="color:#24323C">Welcome {{uname}}</h1>
+	</div>
+	
+	<!-- Inside -->
+	<div class="form" style="max-width:80%;max-height:80%">
+		<div>
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="float:right;">
+				<img src='images\final.png' style="height:100px;width:100px;float:left">
+			</button>
+			<button type="button" class="btn btn-info btn-lg" data-target="#userprofile" data-toggle="modal" ng-click="findone('dev5833@gmail.com')" style="float:left;margin-right:280px;">
+				<img src='images\user.png' style="height:100px;width:100px;float:left;">
+			</button>
+			<button type="button" class="btn btn-info btn-lg"  ng-click="logout();" style="float:left;">
+				<img src='images\logout.jpg' style="height:100px;width:100px;float:left;">
+			</button>
+			<br><br>
+		</div>
+			
+		<div>
+			<br><br><br><br><br><hr style="height:1px;border:none;color:WHITE;background-color:WHITE;" />
+		</div>
+		<div>
+			<p><input type="text" ng-model="search.keyword" style="color:white" placeholder="Serch Products"></p>
+			<table class="table" style="color:white;">
+			<i>
+			<tr scope="row" style="color:black;font-size: 16px;background-color:green;" >
+				<td></td>
+				<td>Title</td>
+				<td>Code</td>
+				<td>Quentity</td>
+				<td>price</td>
+				<td>Description</td>
+				<td style="display:none;">keyword</td>
+				<td></td>
+				<td></td>
+			</tr>
+			</i>
+			<tr  ng-repeat="name in names | filter:search ">
+				<td><img style="height:50px;width:50px;" src = 'data:image/jpg;base64,{{name.filedata.base64}}'></td>
+				<td>{{ name.title }}</td>
+				<td>{{ name.code }}</td>
+				<td>{{ name.qty }}</td>
+                <td>{{ name.price }}</td>
+				<td>{{ name.description }}</td>
+				<td style="display:none;">{{ name.keyword }}</td>
+				<td><button type="button" style="background-color:blue;"  ng-click="findoneproduct(name.code)" data-toggle="modal" data-target="#myupdateModal"><span class="glyphicon glyphicon-edit"></span></button></td>
+				<td><button type="button" style="background-color:blue;"  ng-click="deleteproduct(name.code)"><span class="glyphicon glyphicon-remove"></span></button> </td>
+				
+			</tr>
+		</table>
+		</div>
+		
+	</div> 
+	
+	
+<!-- Product Popup -->	
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    	<!-- Modal content-->
+      		<div class="modal-content">
+        		<div class="modal-header">
+          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+          			<h4 class="modal-title">ADD Product</h4>
+        		</div>
+					<form method='post' enctype = "multipart/form-data" ng-submit="addproduct(product)">
+        				<div class="modal-body">
+							<input type="text" ng-model="product.title" class="form-control" placeholder="Product Title"  required><br>
+							<input type="text" ng-model="product.code" class="form-control" placeholder="Product code"  required><br>
+							<input type="text" ng-model="product.keyword" class="form-control" placeholder="Keywords(Seprate With Semocolon(,))" required><br>
+							<input type="number" min="1" max="999" ng-model="product.qty" class="form-control" placeholder="Quentity" required ><br>
+							<input type="number" min="1" ng-model="product.price" class="form-control" placeholder="Price in $" required><br> 
+							<input type='file' ng-model='product.filedata' base-sixty-four-input><br>
+							<textarea class="form-control" placeholder="Description" ng-model="product.description" required></textarea><br>
+							*Amount In $(Dollar)
+						</div>
+        				<div class="modal-footer">
+          					<button type="submit" class="btn btn-default" >ADD</button>
+						</div>
+					</form>		
+        	</div>
+	</div>
+</div>
+	
+<!-- Update Product -->	
+<div class="modal fade" id="myupdateModal" role="dialog">
+    <div class="modal-dialog">
+    	<!-- Modal content-->
+      		<div class="modal-content">
+        		<div class="modal-header">
+          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+          			<h4 class="modal-title">UPDATE Product</h4>
+        		</div>
+					<form method='post' enctype = "multipart/form-data" ng-submit="updateone(product1.code)">
+        				<div class="modal-body">
+							<input type="text" ng-model="product1.title" class="form-control" placeholder="Product Title"  required><br>
+							<input type="text" ng-model="product1.code" class="form-control" placeholder="Product code"  required><br>
+							<input type="text" ng-model="product1.keyword" class="form-control" placeholder="Keywords(Seprate With Semocolon(,))" required><br>
+							<input type="number" min="1" max="999" ng-model="product1.qty" class="form-control" placeholder="Quentity" required ><br>
+							<input type="number" min="1" ng-model="product1.price" class="form-control" placeholder="Price in $" required><br> 
+							
+							<textarea class="form-control" placeholder="Description" ng-model="product1.description" required></textarea><br>
+							*Amount In $(Dollar)
+						</div>
+        				<div class="modal-footer">
+          					<button type="submit" class="btn btn-default" >UPDATE</button>
+						</div>
+					</form>		
+        	</div>
+	</div>
+</div>
+	
+<!-- User Popup -->		
+<div class="modal fade" id="userprofile" role="dialog">
+    <div class="modal-dialog">
+    	<!-- Modal content-->
+      		<div class="modal-content">
+        		<div class="modal-header">
+          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+          			<h4 class="modal-title">User Profile</h4>
+        		</div>
+					<form  ng-submit="updateuser(uperson)">
+        				<div class="modal-body">
+							<input type="text" ng-model="uperson.fname" class="form-control" placeholder="Name" ><br>
+							<input type="text" ng-model="uperson.lname" class="form-control" placeholder="Keywords(Seprate With Semocolon(,))" ><br>
+							<input type="email" ng-model="uperson.email" class="form-control" placeholder="Quentity" ><br> 
+							<textarea class="form-control" placeholder="address" ng-model="uperson.address"  ></textarea><br> 
+						</div>
+        				<div class="modal-footer">
+          					<button type="submit" class="btn btn-default" >Update</button>
+						</div>
+					</form>		
+        	</div>
+	</div>
+</div>
+
+	
+<!-- main controll div completed>
+</div>
+	<!-- --------------------------- -->
+</div>	
+      
+   
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+					ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" 
+					ngf-resize="{width: 100, height: 100}" ng-model="product.path"
+-->

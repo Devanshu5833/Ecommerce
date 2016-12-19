@@ -1,0 +1,20 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "build an ecommerce website with some basic feature",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start":"node index.js"
+  },
+  "author": "Devanshu Oza",
+  "license": "ISC",
+  "dependencies": {
+    "angular-base64-upload": "^0.1.19",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.2.1",
+    "mongodb": "^2.2.14",
+    "ng-file-upload": "^12.2.13"
+  }
+}
