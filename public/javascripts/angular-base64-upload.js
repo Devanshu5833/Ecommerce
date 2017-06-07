@@ -1,9 +1,9 @@
-(function(window, undefined) {
+(function (window, undefined) {
 
   'use strict';
 
   /* istanbul ignore next */
-  window._arrayBufferToBase64 = function(buffer) { //http://stackoverflow.com/questions/9267899/arraybuffer-to-base64-encoded-string
+  window._arrayBufferToBase64 = function (buffer) { //http://stackoverflow.com/questions/9267899/arraybuffer-to-base64-encoded-string
     var binary = '';
     var bytes = new Uint8Array(buffer);
     var len = bytes.byteLength;
@@ -19,7 +19,7 @@
   mod.directive('baseSixtyFourInput', [
     '$window',
     '$q',
-    function($window, $q) {
+    function ($window, $q) {
 
       var isolateScope = {
         onChange: '&',
@@ -37,7 +37,7 @@
         restrict: 'A',
         require: 'ngModel',
         scope: isolateScope,
-        link: function(scope, elem, attrs, ngModel) {
+        link: function (scope, elem, attrs, ngModel) {
 
           /* istanbul ignore if */
           if (!ngModel) {
@@ -47,7 +47,7 @@
           var rawFiles = [];
           var fileObjects = [];
 
-          elem.on('change', function(e) {
+          elem.on('change', function (e) {
 
             if (!e.target.files.length) {
               return;
@@ -82,7 +82,7 @@
               fileObject.filetype = file.type;
               fileObject.filename = file.name;
               fileObject.filesize = file.size;
-              
+
               _attachEventHandlers(reader, file, fileObject);
               reader.readAsArrayBuffer(file);
             }
@@ -102,7 +102,7 @@
               for (var i = rawFiles.length - 1; i >= 0; i--) {
                 promises.push(rawFiles[i].deferredObj.promise);
               }
-              $q.all(promises).then(function() {
+              $q.all(promises).then(function () {
                 scope.onAfterValidate()(e, fileObjects, rawFiles);
               });
             }
@@ -121,14 +121,14 @@
           }
 
           function _attachHandlerForEvent(eventName, handler, fReader, file, fileObject) {
-            fReader[eventName] = function(e) {
+            fReader[eventName] = function (e) {
               handler()(e, fReader, file, rawFiles, fileObjects, fileObject);
             };
           }
 
           function _readerOnLoad(fReader, file, fileObject) {
 
-            return function(e) {
+            return function (e) {
 
               var buffer = e.target.result;
               var promise;
@@ -141,7 +141,7 @@
                 promise = $q.when(fileObject);
               }
 
-              promise.then(function(fileObj) {
+              promise.then(function (fileObj) {
                 fileObjects.push(fileObj);
                 // fulfill the promise here.
                 file.deferredObj.resolve();
@@ -165,20 +165,21 @@
             _accept(newVal);
           }
 
-          ngModel.$isEmpty = function(val) {
+          ngModel.$isEmpty = function (val) {
             return !val || (angular.isArray(val) ? val.length === 0 : !val.base64);
           };
 
           // http://stackoverflow.com/questions/1703228/how-can-i-clear-an-html-file-input-with-javascript
-          scope._clearInput = function() {
+          scope._clearInput = function () {
             elem[0].value = '';
           };
 
-          scope.$watch(function() {
+          scope.$watch(function () {
             return ngModel.$viewValue;
-          }, function(val, oldVal) {
+          }, function (val, oldVal) {
             if (ngModel.$isEmpty(oldVal)) {
-              return; }
+              return;
+            }
             if (ngModel.$isEmpty(val)) {
               scope._clearInput();
             }
@@ -263,7 +264,8 @@
                   valid = regExp.test(file.filetype) || regExp.test(fileExt);
 
                   if (!valid) {
-                    break; }
+                    break;
+                  }
                 }
               } else {
                 fileExt = "." + val.filename.split('.').pop();
@@ -280,5 +282,4 @@
 
     }
   ]);
-
 })(window);
