@@ -6,12 +6,41 @@
 
   <div id="login">
     <h1>Welcome Back!</h1>
-
+    <!-- Error Message Popup -->
     <div id="myModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content" id="modal-content">
         <span class="close">&times;</span>
         <p>{{loginresponse}}</p>
+      </div>
+    </div>
+
+    <!-- Forgot password popup -->
+    <div class="modal fade" id="forgotpassword" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Forgot Password</h4>
+          </div>
+          <div class="modal-body">
+            </br>
+            <form method="post" name="myForm">
+            <input type="email" name="input" ng-model='femail.email' style="color:black" required autocomplete="off" placeholder='Email*' />
+            </form>
+            <br>
+            <span class="error" style="color:red" ng-show="myForm.input.$error.required">
+                Required!</span>
+            <span class="error" style="color:red" ng-show="myForm.input.$error.email">
+                Not valid email!</span>
+            <span class="error" style="color:red"  ng-show="resmessage" > {{resmessage}} </span>
+            </br></br>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-default" ng-click="!myForm.input.$error.required && !myForm.input.$error.email && forgotpassword(femail)">Submit</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -25,7 +54,7 @@
         <input type="password" ng-model='person.password' required autocomplete="off" placeholder='Password*' />
       </div>
 
-      <p class="forgot"><a href="#">Forgot Password?</a></p>
+      <p class="forgot"><a href="#" data-toggle="modal" data-target="#forgotpassword">Forgot Password?</a></p>
 
       <button type="submit" class="button button-block" />Login</button>
 

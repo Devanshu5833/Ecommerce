@@ -14,7 +14,7 @@
 
       <div id="myModal" class="modal">
         <!-- Modal content -->
-        <div class="modal-content" id = "modal-content">
+        <div class="modal-content" id = "modal-content" style="border-radius : 5px;border: 2px solid black">
           <span class="close">&times;</span>
           <p>{{response}}</p>
         </div>
@@ -40,7 +40,7 @@
         <!-- <label>
               Email Address<span class="req">*</span>
             </label> -->
-        <input class="req" type="email" ng-model="person.email" required autocomplete="off" placeholder="Email Address*" />
+        <input id='txtemail' type="email" ng-model="person.email" required autocomplete="off" placeholder="Email Address*"/>
       </div>
 
       <div class="field-wrap">

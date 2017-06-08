@@ -105,7 +105,7 @@ label.highlight {
   color: #ffffff;
 }
 
-input, textarea {
+input, textarea,select {
   font-size: 22px;
   display: block;
   width: 100%;
@@ -115,12 +115,12 @@ input, textarea {
   background-image: none;
   border: 1px solid #a0b3b0;
   color: #ffffff;
-  border-radius: 0;
+  border-radius: 5px;
   -webkit-transition: border-color .25s ease, box-shadow .25s ease;
   transition: border-color .25s ease, box-shadow .25s ease;
 }
 input:focus, textarea:focus {
-  outline: 0;
+  outline: 3;
   border-color: #1ab188;
 }
 select,option

@@ -221,35 +221,52 @@ function sellercontroller($scope, $http, $location) {
 }
 
 
-function mainController($scope, $http, $location) {
+function mainController($scope, $http, $location, $window, $rootScope) {
 	$scope.person = {};
 	$scope.product = {};
 
-	$scope.getuserprofile = function (id) {
+	$rootScope.$on("$routeChangeSuccess", function (args) {
+		$scope.person = {};
+	})
 
-		{
-			$http.get('/user/' + id)
-				.success(function (data) {
-					$scope.uperson = data;
-				})
-				.error(function (data) {
-					console.log('Error: ' + data);
-				});
-		}
+	$scope.getuserprofile = function (id) {
+		$http.get('/user/' + id)
+			.success(function (data) {
+				$scope.uperson = data;
+			})
+			.error(function (data) {
+				console.log('Error: ' + data);
+			});
 	};
 
 	$scope.findone = function (id) {
-
-		{
-			$http.get('/user/' + id)
-				.success(function (data) {
-					$scope.uperson = data;
-				})
-				.error(function (data) {
-					console.log('Error: ' + data);
-				});
-		}
+		$http.get('/user/' + id)
+			.success(function (data) {
+				$scope.uperson = data;
+			})
+			.error(function (data) {
+				console.log('Error: ' + data);
+			});
 	};
+
+	$scope.forgotpassword = function(email){
+		
+		$http({
+			url: '/forgotpassword',
+			dataType: 'json',
+			method: 'POST',
+			data: email,
+			headers: {
+				"Content-Type": "application/json"
+			}
+		}).success(function (response,status) {
+			$scope.resmessage = true;
+			$scope.resmessage = "Mail successfully send on " + response.Success;
+		}).error(function (error, status) {
+			$scope.resmessage = true;
+			$scope.resmessage = error.error;
+		});
+	}
 
 
 	$scope.saveCustomer = function (person) {
@@ -257,6 +274,7 @@ function mainController($scope, $http, $location) {
 		var modal = document.getElementById('myModal');
 		var span = document.getElementsByClassName("close")[0];
 		document.getElementById('modal-content').style.width = '30%';
+		var cbstatus;
 
 		$http({
 			url: '/signup',
@@ -270,19 +288,26 @@ function mainController($scope, $http, $location) {
 			$scope.response = response.success;
 			modal.style.display = "block";
 			$scope.person = {};
-		}).error(function (error,status) {
+		}).error(function (error, status) {
 			$scope.response = error.error;
 			modal.style.display = "block";
+			cbstatus = status;
 			status == 400 ? $scope.person.email = {} : $scope.person = {};
 		});
 
 		span.onclick = function () {
-			modal.style.display = "none";	
+			modal.style.display = "none";
+			if (cbstatus == 400)
+				document.getElementById('txtemail').focus();
 		}
-		
+
 	};
 
 	$scope.logincust = function (person) {
+
+		var modal = document.getElementById('myModal');
+		var span = document.getElementsByClassName("close")[0];
+		document.getElementById('modal-content').style.width = '30%';
 
 		$http({
 			url: '/login',
@@ -293,19 +318,8 @@ function mainController($scope, $http, $location) {
 				"Content-Type": "application/json"
 			}
 
-		}).success(function (response) {
-			alert(response);
-			if (response.error) {
-				$scope.loginresponse = response.error;
-				var modal = document.getElementById('myModal');
-				var span = document.getElementsByClassName("close")[0];
-				modal.style.display = "block";
-				document.getElementById('modal-content').style.width = '30%';
-				span.onclick = function () {
-					modal.style.display = "none";
-				}
-			}
-			else if (response.Status == "1") {
+		}).success(function (response, status) {
+			if (status == 200) {
 				localStorage.setItem('Authoraization', response.AuthToken);
 				localStorage.setItem('username', response.uname);
 				localStorage.setItem('urole', response.Role);
@@ -318,21 +332,17 @@ function mainController($scope, $http, $location) {
 					$location.path('/customer');
 					$location.replace();
 				}
-
-				$scope.person = {};
 			}
-			else {
-				alert(response);
-				$scope.person = {};
-			}
-
-		}).error(function (error) {
-			alert(error);
-			$scope.error = error;
+		}).error(function (error,status) {
+			$scope.loginresponse = error.error;
+			modal.style.display = "block";
+			$scope.person = {};
 		});
 
+		span.onclick = function () {
+			modal.style.display = "none";
+		}
 	};
-
 }
 
 
