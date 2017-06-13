@@ -1,4 +1,5 @@
 var app = angular.module("myApp", ['ngRoute', 'naif.base64']);
+
 app.config(function ($routeProvider) {
 	$routeProvider
 		.when("/", {
@@ -16,9 +17,13 @@ app.config(function ($routeProvider) {
 		.when("/customer", {
 			templateUrl: "customer.html"
 		})
+		.when("/passwordreset", {
+			templateUrl: "passwordreset.html"
+		})
 });
 
 function sellercontroller($scope, $http, $location) {
+	
 	//get the name of the current logged user from localstorage
 	$scope.uname = localStorage.getItem('username');
 	$scope.role = localStorage.getItem('urole');
@@ -220,37 +225,20 @@ function sellercontroller($scope, $http, $location) {
 
 }
 
-
+//mainController 
+//Pages : login,signup,passwordreset
 function mainController($scope, $http, $location, $window, $rootScope) {
 	$scope.person = {};
 	$scope.product = {};
 
+	//whenever route change this event will occur
+	//Purpouse : to blank all fields
 	$rootScope.$on("$routeChangeSuccess", function (args) {
 		$scope.person = {};
 	})
 
-	$scope.getuserprofile = function (id) {
-		$http.get('/user/' + id)
-			.success(function (data) {
-				$scope.uperson = data;
-			})
-			.error(function (data) {
-				console.log('Error: ' + data);
-			});
-	};
-
-	$scope.findone = function (id) {
-		$http.get('/user/' + id)
-			.success(function (data) {
-				$scope.uperson = data;
-			})
-			.error(function (data) {
-				console.log('Error: ' + data);
-			});
-	};
-
-	$scope.forgotpassword = function(email){
-		
+	//Forgot Password Email sent
+	$scope.forgotpassword = function (email) {
 		$http({
 			url: '/forgotpassword',
 			dataType: 'json',
@@ -259,7 +247,7 @@ function mainController($scope, $http, $location, $window, $rootScope) {
 			headers: {
 				"Content-Type": "application/json"
 			}
-		}).success(function (response,status) {
+		}).success(function (response, status) {
 			$scope.resmessage = true;
 			$scope.resmessage = "Mail successfully send on " + response.Success;
 		}).error(function (error, status) {
@@ -268,14 +256,13 @@ function mainController($scope, $http, $location, $window, $rootScope) {
 		});
 	}
 
-
+	//SignUP new Customer
 	$scope.saveCustomer = function (person) {
 
-		var modal = document.getElementById('myModal');
-		var span = document.getElementsByClassName("close")[0];
+		let modal = document.getElementById('myModal');
+		let span = document.getElementsByClassName("close")[0];
 		document.getElementById('modal-content').style.width = '30%';
-		var cbstatus;
-
+		let cbstatus;
 		$http({
 			url: '/signup',
 			dataType: 'json',
@@ -303,12 +290,11 @@ function mainController($scope, $http, $location, $window, $rootScope) {
 
 	};
 
+	//Login Customer
 	$scope.logincust = function (person) {
-
-		var modal = document.getElementById('myModal');
-		var span = document.getElementsByClassName("close")[0];
+		let modal = document.getElementById('myModal');
+		let span = document.getElementsByClassName("close")[0];
 		document.getElementById('modal-content').style.width = '30%';
-
 		$http({
 			url: '/login',
 			dataType: 'json',
@@ -317,7 +303,6 @@ function mainController($scope, $http, $location, $window, $rootScope) {
 			headers: {
 				"Content-Type": "application/json"
 			}
-
 		}).success(function (response, status) {
 			if (status == 200) {
 				localStorage.setItem('Authoraization', response.AuthToken);
@@ -333,7 +318,7 @@ function mainController($scope, $http, $location, $window, $rootScope) {
 					$location.replace();
 				}
 			}
-		}).error(function (error,status) {
+		}).error(function (error, status) {
 			$scope.loginresponse = error.error;
 			modal.style.display = "block";
 			$scope.person = {};
@@ -343,11 +328,35 @@ function mainController($scope, $http, $location, $window, $rootScope) {
 			modal.style.display = "none";
 		}
 	};
+
+	//Update password (LINK : forgotpassword)
+	$scope.updatepassword = function (pwd) {
+		let modal = document.getElementById('pwdmodel');
+		let span = document.getElementsByClassName("close")[0];
+		document.getElementById('modal-content').style.width = '50%';
+		$http({
+			url: '/reset/' + $location.search().token,
+			dataType: 'json',
+			method: 'PUT',
+			data: pwd,
+			headers: {
+				"Content-Type": "application/json"
+			}
+		}).success(function (response, status) {
+			if (status == 200) {
+				$scope.pwdreset = response.success;
+				modal.style.display = "block";
+				$scope.pwd = {};
+			}
+		}).error(function (error, status) {
+			$scope.pwdreset = error.error;
+			modal.style.display = "block";
+			$scope.pwd = {};
+		});
+
+		span.onclick = function ($location) {
+			modal.style.display = "none";
+			$window.location.href  ='#/login';
+		}
+	}
 }
-
-
-
-
-
-
-

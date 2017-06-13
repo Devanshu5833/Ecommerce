@@ -3,9 +3,7 @@
   <ul class="tab-group">
     <li class="tab"><a href="#login">Log In</a></li>
     <li class="tab active"><a href="#signup">Sign Up</a></li>
-
   </ul>
-
 
   <div id="signup">
     <h1>Sign Up for Free</h1>
@@ -14,7 +12,7 @@
 
       <div id="myModal" class="modal">
         <!-- Modal content -->
-        <div class="modal-content" id = "modal-content" style="border-radius : 5px;border: 2px solid black">
+        <div class="modal-content" id="modal-content" style="border-radius : 5px;box-shadow:0 4px 10px 4px #24313C;background-color : #C1BDBA;border : none">
           <span class="close">&times;</span>
           <p>{{response}}</p>
         </div>
@@ -22,25 +20,14 @@
 
       <div class="top-row">
         <div class="field-wrap">
-          <!-- <label>
-                First Name<span class="req">*</span>
-              </label> -->
           <input type="text" ng-model="person.fname" required autocomplete="off" placeholder="First Name*" />
         </div>
-
         <div class="field-wrap">
-          <!-- <label>
-                Last Name<span class="req">*</span>
-              </label> -->
           <input type="text" ng-model="person.lname" required autocomplete="off" placeholder="Last Name*" />
         </div>
       </div>
-
       <div class="field-wrap">
-        <!-- <label>
-              Email Address<span class="req">*</span>
-            </label> -->
-        <input id='txtemail' type="email" ng-model="person.email" required autocomplete="off" placeholder="Email Address*"/>
+        <input id='txtemail' type="email" ng-model="person.email" required autocomplete="off" placeholder="Email Address*" />
       </div>
 
       <div class="field-wrap">
@@ -52,16 +39,10 @@
       </div>
 
       <div class="field-wrap">
-        <!-- <label>
-				Address<span class="req">*</span>
-            </label> -->
         <textarea ng-model="person.address" required placeholder="Address*"></textarea>
       </div>
 
       <div class="field-wrap">
-        <!-- <label>
-              Set A Password<span class="req">*</span>
-            </label> -->
         <input type="password" ng-model="person.password" required autocomplete="off" placeholder="Set A Password*" />
       </div>
 

@@ -9,6 +9,6 @@ MongoClient.connect(config.databaseurl, function (err, database) {
 	if (err) {
 		console.log('Unable to connect to the mongoDB server. Error:', err);
 	} else {
-		console.log('Database Connection established to ' + config.databaseurl + " with database " + MongoClient.database);
+		console.log('Database Connection established to "' + config.databaseurl + '" with database "' +database.s.databaseName + '"');
 	}
 });
