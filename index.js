@@ -29,11 +29,13 @@ app.get('/', function (req, res) {
 	res.sendFile('views/index.html');
 });
 
+
 app.listen((process.env.PORT || config.serverport), function (err) {
 	if(!err){
 		console.log("server is running successfully on " + config.serverport);
 		require("./middleware/middleware.js")(app);
 		require("./dbconnection.js");
 		require("./api/login.js")(app);
+		require("./api/seller.js")(app);
 	}
 });

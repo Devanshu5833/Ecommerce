@@ -1,5 +1,5 @@
 /*
-File        : legon.js
+File        : login.js
 Description : Login & SignUp related endpoints
 Author      : Devanshu Oza
 */
